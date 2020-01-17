@@ -5,7 +5,7 @@ import tkinter.messagebox
 conn = sqlite3.connect("D:\Final project\Database\stock.db")
 c = conn.cursor()
 
-class Database:
+class Update:
         def __init__(self, master, *args, **kwargs):
 
                 self.master = master
@@ -142,7 +142,7 @@ class Database:
                
                 
 root = Tk()
-b = Database(root)
+b = Update(root)
 
 root.geometry('1000x600')
 root.title("Update your item")
