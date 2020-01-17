@@ -77,6 +77,7 @@ class Database:
                 if self.id == '' or self.name == '' or self.stock == '' or self.originalPrice == '' or self.price == '':
                         tkinter.messagebox.showinfo('Error', 'Please fill all the entries')
                 else:
+                        #check if there is an existing id in database
                         test = 'SELECT id FROM clothe'
                         test2 = c.execute(test)
                         counter = 0
@@ -84,6 +85,7 @@ class Database:
                                 self.ids = list(r)
                                 if int(self.id) in self.ids:
                                         counter += 1
+                        #if there is an existing id in database
                         if counter != 0:
                                 MsgBox = tkinter.messagebox.askquestion ('Error','There is existing id in database, do you want to rewrite it?',icon = 'warning')
                                 if MsgBox == 'yes':
@@ -96,6 +98,7 @@ class Database:
                                         tkinter.messagebox.showinfo("Success", "Your Database has been updated")
                                 else:
                                         self.id_e.delete(0, END )
+                        #if no existing id
                         else:
                                 self.totalCost = float(self.originalPrice) * float(self.stock)
                                 self.totalEarning = float(self.price) * float(self.stock)
