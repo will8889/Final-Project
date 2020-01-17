@@ -107,12 +107,15 @@ class Application:
             if self.u2 == 0:
                 product_prices.append(self.total_price)
             else:
+                #discount
                 self.total_price -= int(self.total_price) * int(self.u2) / 100
                 product_prices.append(self.total_price)
 
             product_list.append(self.get_name)
             product_quantities.append(self.u1)
             product_id.append(self.get_id)
+            
+            #loop to create a label
             x_loop=0
             y_loop=80
             counter = 0
@@ -148,7 +151,7 @@ class Application:
         self.total_label = Label(self.left, text=('total: ' + str(total_price_bill)), font=("arial 20 bold"), bg="white")
         self.total_label.place(x=10, y=360) 
 
-        #generate bill
+        #Customer_money
         self.bill_name= Label(self.left, text='Given Amount', font=('arial 18 bold'), bg='white')
         self.bill_name.place(x=10, y=400)
 
@@ -171,6 +174,7 @@ class Application:
         if float(self.total_customer_money) < total_price_bill:
             tkinter.messagebox.showinfo('Error', 'need more money')
         else:
+            #calculate the change
             labelll_change = float(self.total_customer_money) - total_price_bill
             self.label_change = Label(self.left, text=('change: ' + str(labelll_change)), font=('arial 20 bold'), bg='white')
             self.label_change.place(x=10, y=500)
@@ -180,19 +184,20 @@ class Application:
         # decrease the stock
         self.x = 0
 
-       
+        #get the new stock, total cost, total earning, assummed profit
         for i in product_list:
             initial = "SELECT * FROM clothe WHERE id=?"
             result = c.execute(initial, (product_id[self.x], ))
 
             for r in result:
-                self.old_stock = r[2]
-                self.og_price = r[3]
-                self.price = r[4]
+                self.old_stock = r[2] #stock
+                self.og_price = r[3] #originalPrice
+                self.price = r[4] #price
             self.new_stock = int(self.old_stock) - int(product_quantities[self.x])
             self.total_cost = float(self.og_price) * float(self.new_stock)
             self.total_earn = float(self.price) * float(self.new_stock)
             self.assumed_profit = float(self.total_earn) - float(self.total_cost)
+            
             # updating the stock
             sql = "UPDATE clothe SET stock=?, totalCost=?, totalEarning=?, assumedProfit=? WHERE id=?"
             c.execute(sql, (self.new_stock,self.total_cost, self.total_earn, self.assumed_profit, product_id[self.x]))
@@ -200,9 +205,11 @@ class Application:
 
         tkinter.messagebox.showinfo('Success','Database stock has been decreased')
 
+        #deleting the looped label in add the cart
         for lbl in list_of_label:
             lbl.destroy()
-            
+         
+        #deleting label, entry, button
         self.product_name.destroy()
         self.product_price.destroy()
         self.quantity1.destroy()
@@ -218,7 +225,8 @@ class Application:
         self.label_change.destroy()
         self.total_label.destroy()
         self.item_e.delete(0, END)
-
+        
+        #clear the list
         product_list.clear()
         product_prices.clear()
         product_quantities.clear()
