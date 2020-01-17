@@ -86,13 +86,13 @@ class Update:
                         sql = "SELECT * FROM clothe WHERE id=?"
                         result = c.execute(sql, (self.id_entry.get(), ))
                         for r in result:
-                                self.n1 = r[1]
-                                self.n2 = r[2]
-                                self.n3 = r[3]
-                                self.n4 = r[4]
-                                self.n5 = r[5]
-                                self.n6 = r[6]
-                                self.n7 = r[7]
+                                self.n1 = r[1] #name
+                                self.n2 = r[2] #stock
+                                self.n3 = r[3] #originalPrice
+                                self.n4 = r[4] #price
+                                self.n5 = r[5] #totalCost
+                                self.n6 = r[6] #totalEarning
+                                self.n7 = r[7] #assumedProfit
                         conn.commit()
                         #insert the entries to update
                         self.name_e.delete(0, END)
@@ -132,6 +132,7 @@ class Update:
                         self.u6 = float(self.u4) * float(self.u2)
                         self.u7 = float(self.u6) - float(self.u5)
 
+                        #update the database
                         query = "UPDATE clothe SET name=?, stock=?, originalPrice=?, price=?, totalCost=?, totalEarning=?, assumedProfit=? WHERE id=?"
                         c.execute(query, (self.u1, self.u2, self.u3, self.u4, self.u5, self.u6,self.u7, self.u_id))
                         conn.commit()
